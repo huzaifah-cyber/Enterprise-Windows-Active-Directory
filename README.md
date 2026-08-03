@@ -304,3 +304,15 @@ With the permissions corrected, both Notepad++ and VLC installed successfully on
 *Figure 29. Notepad++ and VLC successfully installed on the client via GPO.*
 
 ---
+
+## Security Controls Summary
+
+| Security Control | Purpose |
+|---|---|
+| Domain Password & Lockout Policy (GPO) | Enforces minimum password length and locks accounts after repeated failed logons |
+| NTFS / Share Permissions | Restricts departmental folders to their respective security groups (least privilege) |
+| Domain Firewall Enforcement (GPO) | Keeps Windows Firewall enabled on all client machines regardless of signed-in user |
+| RAS/NAT Controlled Routing | Forces all client internet traffic through the domain controller for full visibility |
+| Control Panel Restriction (GPO) | Limits standard users from accessing system-level settings |
+
+---
