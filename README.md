@@ -1,5 +1,4 @@
-# Enterprise Windows Active Directory Lab
-## *Local DNS/DHCP, Group Policies & Software Deployment*
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0A1F44,50:0078D4,100:00BFFF&height=180&section=header&text=Enterprise%20Windows%20AD%20Lab&fontSize=38&fontColor=ffffff&fontAlign=50&fontAlignY=35&animation=fadeIn" width="100%">
 
 > This project builds a self-contained enterprise Windows domain from scratch. A single domain controller handles DNS, DHCP, and internet routing for an isolated client network, while Active Directory manages user identity, departmental file permissions, and security policy. It shows how a real organization centrally manages and enforces its network services, user access, and endpoint configuration; all from one domain controller.
 
