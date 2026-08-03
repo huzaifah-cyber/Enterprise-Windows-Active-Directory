@@ -8,7 +8,7 @@
 
 <img src="assets/1.png" width="900">
 
-*Figure 1. Lab topology — the domain controller runs two NICs (one for internet access, one as the gateway/DNS/DHCP source for the isolated client network), while the client VM connects through a single host-only NIC.*
+*Figure 1. Lab topology: the domain controller runs two NICs (one for internet access, one as the gateway/DNS/DHCP source for the isolated client network), while the client VM connects through a single host-only NIC.*
 
 ---
 
@@ -38,7 +38,7 @@
 
 ### Step 1: Network Foundation & Domain Controller Setup
 
-The domain controller was built with two NICs — one for internet access and one to serve as the gateway, DNS, and eventual DHCP source for the isolated client network.
+The domain controller was built with two NICs; one for internet access and one to serve as the gateway, DNS, and eventual DHCP source for the isolated client network.
 
 #### Dual-NIC Network Design
 
@@ -46,7 +46,7 @@ The domain controller uses two separate NICs: one for internet connectivity, and
 
 <img src="assets/2.png" width="900">
 
-*Figure 2. Dual-NIC configuration — internet-facing NIC and client-network gateway NIC.*
+*Figure 2. Dual-NIC configuration; internet-facing NIC and client-network gateway NIC.*
 
 #### Static IP & DNS Configuration
 
@@ -74,7 +74,7 @@ A new forest was created with the FQDN `mydomain.com`, promoting the server to d
 
 #### Organizational Unit & Domain Admin Provisioning
 
-An `_ADMINS` OU was created in Active Directory Users and Computers, and a dedicated domain admin account (`a-mhuzaifah`) was added — separating administrative identity from standard user access.
+An `_ADMINS` OU was created in Active Directory Users and Computers, and a dedicated domain admin account (`a-mhuzaifah`) was added; separating administrative identity from standard user access.
 
 <img src="assets/6.png" width="900">
 
@@ -84,7 +84,7 @@ An `_ADMINS` OU was created in Active Directory Users and Computers, and a dedic
 
 ### Step 2: Client Internet Access & DHCP
 
-Rather than letting the client network reach the internet directly, all outbound traffic is routed through the DC — giving full visibility and control over client connectivity.
+Rather than letting the client network reach the internet directly, all outbound traffic is routed through the DC; giving full visibility and control over client connectivity.
 
 #### RAS/NAT Deployment
 
@@ -112,7 +112,7 @@ DHCP was installed on the domain controller to automatically assign IP configura
 
 #### DHCP Scope Configuration
 
-The DHCP scope was set to `172.16.0.100–200`, providing 100 available addresses with a 2-day lease — a reasonable interval for a home lab, though shorter than what would be used in a public-facing environment.
+The DHCP scope was set to `172.16.0.100–200`, providing 100 available addresses with a 2-day lease; a reasonable interval for a home lab, though shorter than what would be used in a public-facing environment like a cafe.
 
 <img src="assets/10.png" width="900">
 
@@ -130,7 +130,7 @@ A PowerShell script was used to bulk-create 1,000 domain user accounts with a st
 
 ```powershell
 # Bulk AD user creation script
-# Credit: Josh Madakor — https://github.com/joshmadakor1/AD_PS
+# Credit: Josh Madakor : https://github.com/joshmadakor1/AD_PS
 ```
 
 <img src="assets/11.png" width="900">
@@ -155,7 +155,7 @@ Domain and internet connectivity were confirmed by pinging both the local domain
 
 <img src="assets/14.png" width="900">
 
-*Figure 14. Connectivity verification — local domain resolution and internet reachability via RAS.*
+*Figure 14. Connectivity verification: local domain resolution and internet reachability via RAS.*
 
 ---
 
@@ -173,13 +173,13 @@ Three security groups were created under a `Groups` OU, each populated with its 
 
 #### Departmental Shared Folder Structure
 
-A `Shared by DC` folder was created containing three departmental subfolders, each restricted to its corresponding security group with Read/Write permissions — preventing cross-department access (e.g., IT cannot view HR or Finance).
+A `Shared by DC` folder was created containing three departmental subfolders, each restricted to its corresponding security group with Read/Write permissions; preventing cross-department access (e.g., IT cannot view HR or Finance).
 
 <img src="assets/16.png" width="900">
 
 *Figure 16. Departmental shared folders with group-based Read/Write permissions.*
 
-#### Access Control Verification — Negative Test
+#### Access Control Verification: Negative Test
 
 User `mhuzaifah`, a member of the `_IT` group, was confirmed unable to access the Finance department folder over the network.
 
@@ -187,7 +187,7 @@ User `mhuzaifah`, a member of the `_IT` group, was confirmed unable to access th
 
 *Figure 17. Access denied to Finance folder for a non-member user.*
 
-#### Access Control Verification — Positive Test
+#### Access Control Verification: Positive Test
 
 The same user was confirmed able to access and modify files within the IT department folder, matching their group membership.
 
@@ -197,13 +197,13 @@ The same user was confirmed able to access and modify files within the IT depart
 
 ---
 
-### Step 5: Group Policy — Account & Password Security
+### Step 5: Group Policy: Account & Password Security
 
 With Part 1's infrastructure complete, Part 2 focused on Group Policy–driven security enforcement and software deployment.
 
 #### Domain-Wide Password & Lockout Policy
 
-The Default Domain Policy was edited to enforce a 12-character minimum password length and an account lockout policy (5 attempts, 10-minute lockout duration, 10-minute reset window). Editing the Default Domain Policy — rather than a separate GPO — ensures these account policies apply domain-wide rather than to a subset of users.
+The Default Domain Policy was edited to enforce a 12-character minimum password length and an account lockout policy (5 attempts, 10-minute lockout duration, 10-minute reset window). Editing the Default Domain Policy, rather than a separate GPO, ensures these account policies apply domain-wide rather than to a subset of users.
 
 <img src="assets/19.png" width="900">
 
@@ -219,13 +219,13 @@ The lockout policy was validated in practice, confirming the configured 10-minut
 
 ---
 
-### Step 6: Group Policy — Targeted User & Computer Configuration
+### Step 6: Group Policy: Targeted User & Computer Configuration
 
 To separate policies that target users from those that target machines, dedicated OUs were created for each.
 
 #### OU Structure for Targeted GPOs
 
-Two OUs — `_USERS` and `_COMPUTERS` — were created in Group Policy Management for `mydomain.com`, housing policies scoped to their respective object types. Control Panel and PC settings access was enabled as part of this structure.
+Two OUs: `_USERS` and `_COMPUTERS` were created in Group Policy Management for `mydomain.com`, housing policies scoped to their respective object types. Control Panel and PC settings access was enabled as part of this structure.
 
 <img src="assets/21.png" width="900">
 
@@ -267,7 +267,7 @@ A GPO enforcing Windows Firewall across all profiles was applied under `_COMPUTE
 
 ### Step 7: Automated Software Deployment & Troubleshooting
 
-The final phase deployed software automatically to the client at logon — and surfaced a real troubleshooting scenario along the way.
+The final phase deployed software automatically to the client at logon and surfaced a real troubleshooting scenario along the way.
 
 #### Software Installation GPO
 
@@ -279,7 +279,7 @@ A software installation GPO was configured under `_COMPUTERS` to deploy Notepad+
 
 #### Troubleshooting a Failed Deployment
 
-The `gpresult` report revealed the software failed to install at logon. This error persisted for roughly three hours — restarts, UNC path verification, and `gpupdate /force` all failed to resolve it.
+The `gpresult` report revealed the software failed to install at logon. This error persisted for roughly three hours: restarts, UNC path verification, and `gpupdate /force` all failed to resolve it.
 
 <img src="assets/27.png" width="900">
 
@@ -287,11 +287,11 @@ The `gpresult` report revealed the software failed to install at logon. This err
 
 #### Root Cause & Resolution
 
-The root cause was an NTFS permissions gap: Domain Users had read access to the folder hosting the MSI files, but Domain Computers did not — and since this is a computer-targeted installation, it's the computer account, not the signed-in user, that needs access. The fix was to remove read access for Domain Users and grant it to Domain Computers instead.
+The root cause was an NTFS permissions gap: Domain Users had read access to the folder hosting the MSI files, but Domain Computers did not, and since this is a computer-targeted installation, it's the computer account, not the signed-in user, that needs access. The fix was to remove read access for Domain Users and grant it to Domain Computers instead.
 
 <img src="assets/28.png" width="900">
 
-*Figure 28. NTFS permissions corrected — Domain Computers granted read access, Domain Users' access removed.*
+*Figure 28. NTFS permissions corrected: Domain Computers granted read access, Domain Users' access removed.*
 
 #### Verification
 
@@ -302,13 +302,3 @@ With the permissions corrected, both Notepad++ and VLC installed successfully on
 *Figure 29. Notepad++ and VLC successfully installed on the client via GPO.*
 
 ---
-
-## Conclusion
-
-This lab replicates the core of how an enterprise Windows environment is built and managed — from network segmentation and domain controller deployment through Active Directory structure, departmental access control, and Group Policy enforcement. The software deployment troubleshooting in particular reflects a real-world scenario: a policy that applies correctly on paper but fails silently until the underlying permissions model — user vs. computer identity — is properly understood.
-
----
-
-## Disclaimer
-
-This project was completed in an isolated lab environment for educational purposes.
